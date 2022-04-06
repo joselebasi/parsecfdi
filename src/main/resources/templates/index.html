@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>Listado de facturas</title>
+    <link th:href="@{/styles/main.css}" rel="stylesheet" />
+    <script th:inline="javascript">
+    </script>
+    <script type="text/javascript" th:src="@{/js/actions.js}"></script>
+    <!-- CSS only -->
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+        <a class="navbar-brand" href="#"> Control de facturas 1.0</a>
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" th:href="@{/startSession}">Control de facturas 1.0</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <h1>Lista de facturas</h1>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <form method="POST" enctype="multipart/form-data" action="/uploadFile">
+                    <div class="form-group">
+                        <div class="custom-file">
+                            <input accept=".zip" type="file" class="form-control" id="customFile" name="file">
+                        </div>
+                        <button class="btn btn-dark" type="submit">Procesar zip de facturas</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <br>
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Emisor</th>
+                    <th>Regimen Fiscal</th>
+                    <th>RFC</th>
+                    <th>Total</th>
+                    <th>IVA</th>
+                    <th>Subtotal</th>
+                    <th>Forma Pago</th>
+                    <th>Metodo Pago</th>
+                    <th>XML</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="cfdi : ${cfdis}">
+                    <td th:text="${cfdi.fecha}">Fecha</td>
+                    <td th:text="${cfdi.emisorNombre}">Emisor</td>
+                    <td th:text="${cfdi.emisorRegimenFiscal}">Regimen Fiscal</td>
+                    <td th:text="${cfdi.emisorRfc}">RFC</td>
+                    <td th:text="${cfdi.total}">Total</td>
+                    <td th:text="${cfdi.iva}">IVA</td>
+                    <td th:text="${cfdi.subtotal}">Subtotal</td>
+                    <td th:text="${cfdi.formapago}">Forma Pago</td>
+                    <td th:text="${cfdi.metodoPago}">Metodo Pago</td>
+                    <td th:text="${cfdi.xml}">XML</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+
+</html>
