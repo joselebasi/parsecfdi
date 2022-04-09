@@ -42,6 +42,7 @@ import com.jitm.parsecfdi.service.CfdiService;
 import com.jitm.parsecfdi.service.ExcelService;
 
 @Controller
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
 public class UploadFileController {
 
 	@Autowired
@@ -109,7 +110,6 @@ public class UploadFileController {
 		return "redirect:/";
 	}
 
-	@CrossOrigin(origins = "https://parsecfdi-ebxsj5c4la-uc.a.run.app")
 	@RequestMapping(value = "/filegenerator", method=RequestMethod.POST)
 	public void greetingSubmit(HttpServletResponse response, HttpSession session)
 	throws IOException  {
