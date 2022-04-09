@@ -4,6 +4,8 @@
 # For Java 11, try this
 FROM adoptopenjdk/openjdk11:alpine-jre
 
+RUN apk add --update ttf-dejavu && rm -rf /var/cache/apk/* 
+
 # Refer to Maven build -> finalName
 ARG JAR_FILE=target/parsecfdi-0.0.1-SNAPSHOT.jar
 
