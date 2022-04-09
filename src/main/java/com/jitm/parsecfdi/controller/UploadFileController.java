@@ -6,6 +6,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -108,12 +109,13 @@ public class UploadFileController {
 		return "redirect:/";
 	}
 
+	@CrossOrigin(origins = "https://parsecfdi-ebxsj5c4la-uc.a.run.app")
 	@RequestMapping(value = "/filegenerator", method=RequestMethod.POST)
 	public void greetingSubmit(HttpServletResponse response, HttpSession session)
 	throws IOException  {
 
 		ArrayList<Cfdi> cfdisFile = (ArrayList<Cfdi>)session.getAttribute("cfdis");
-		
+
 		response.setContentType("application/octet-stream");
         response.setHeader("Content-Disposition", "attachment; filename=customers.xlsx");
         ByteArrayInputStream stream = excelService.writeExcelTotal("misfacturas",cfdisFile);
