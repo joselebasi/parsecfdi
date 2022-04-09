@@ -110,7 +110,7 @@ public class UploadFileController {
 		return "redirect:/";
 	}
 
-	@RequestMapping(value = "/filegenerator", method=RequestMethod.POST)
+	@PostMapping("/filegenerator")
 	public void greetingSubmit(HttpServletResponse response, HttpSession session)
 	throws IOException  {
 
