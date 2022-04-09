@@ -3,11 +3,9 @@ steps:
     args:
       - '-c'
       - >
+        ls
         mvn package -Dmaven.test.skip=true -f parsecfdi/pom.xml
-
-        cp
-        parsecfdi/target/parsecfdi-0.0.1-SNAPSHOT.jar 
-        deploy/dev/parsecfdi.jar
+        cp parsecfdi/target/parsecfdi-0.0.1-SNAPSHOT.jar deploy/dev/parsecfdi.jar
     entrypoint: bash
   - name: gcr.io/cloud-builders/docker
     args:
