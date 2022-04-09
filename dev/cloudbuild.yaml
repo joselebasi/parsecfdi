@@ -9,7 +9,6 @@ steps:
     args:
       - '-c'
       - >
-        date -u +%Y%m%dT%H%M%S > .tag
         docker build -t gcr.io/${PROJECT_ID}/${_REPO_NAME}:${BUILD_ID} .
         docker push gcr.io/${PROJECT_ID}/${_REPO_NAME}:${BUILD_ID}
     entrypoint: bash
