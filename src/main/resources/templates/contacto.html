@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
     <link th:href="@{/favicon.ico}" rel="icon" type="image/x-icon" />
+    <script src="https://platform.linkedin.com/badges/js/profile.js" async defer type="text/javascript"></script>
     <!-- Bootstrap CSS -->
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
     <script th:inline="javascript">
@@ -17,7 +18,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="navbar">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Control de facturas 1.0</a>
+            <a class="navbar-brand" th:href="@{/}" >Control de facturas 1.0</a>
             <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -26,23 +27,22 @@
                     <li class="nav-item">
                         <a aria-current="page" class="nav-link active" th:href="@{/contacto}" >Contacto</a>
                     </li>
-                    <li class="nav-item">
-                        <a aria-current="page" class="nav-link active" th:href="@{/}">Regresar</a>
-                    </li>
                 </ul>
             </div>
         </div>
     </nav>
     <br /><br />
     <div class="container"> 
-        Sitio creado por <a href="https://www.linkedin.com/in/jose-toledano-morales">ToledanoSoft</a>
+        <div class="badge-base LI-profile-badge" data-locale="en_US" data-size="large" data-theme="light" data-type="HORIZONTAL" data-vanity="jose-toledano-morales" data-version="v1"><a class="badge-base__link LI-simple-link" href="https://mx.linkedin.com/in/jose-toledano-morales/en?trk=profile-badge">Jose I Toledano Morales</a></div>
+              
+              
     </div>
     <br /><br /><br />
     <footer class="footer-copyright text-center bg-dark py-3"
             style="position:fixed; width:100%; bottom:0; color:white">
         <div>
             <strong>
-                Copyright &copy; 2025 <a href="https://www.linkedin.com/in/jose-toledano-morales">ToledanoSoft</a>
+                Copyright &copy; 2025 created by <a href="https://www.linkedin.com/in/jose-toledano-morales">ToledanoSoft</a>
                 All rights reserved.
             </strong>
         </div>
