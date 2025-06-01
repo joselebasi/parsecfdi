@@ -15,18 +15,22 @@
 </head>
 
 <body>
-    <div class="container-fluid">
-        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-            <a class="navbar-brand" href="#"> Control de facturas 1.0</a>
-            <!-- Navbar links -->
-            <div class="collapse navbar-collapse" id="collapsibleNavbar">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" th:href="@{/startSession}">Control de facturas 1.0</a></li>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand">Control de facturas 1.0</a>
+            <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a aria-current="page" class="nav-link active" th:href="@{/contacto}" >Contacto</a>
+                    </li>
                 </ul>
             </div>
-        </nav>
-    </div>
-    <br>
+        </div>
+    </nav>
+    <br /><br />
     <div class="container-fluid">
         <div class="row">
             <h3>Buscar zip con CFDIs</h3>
@@ -96,6 +100,16 @@
 
         </div>
     </div>
+    <br /><br /><br />
+    <footer class="footer-copyright text-center bg-dark py-3"
+            style="position:fixed; width:100%; bottom:0; color:white">
+        <div>
+            <strong>
+                Copyright &copy; 2025 <a href="https://www.linkedin.com/in/jose-toledano-morales">ToledanoSoft</a>
+                All rights reserved.
+            </strong>
+        </div>
+    </footer>
     <script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </body>
 

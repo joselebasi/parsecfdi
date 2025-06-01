@@ -61,6 +61,11 @@ public class UploadFileController {
 		return "index";
 	}
 
+	@GetMapping("/contacto")
+	public String loadContactPage() {
+		return "contacto";
+	}
+
 	@PostMapping("/startSession")
 	public String startSession() {
 		return "redirect:/index";
