@@ -1,19 +1,26 @@
-# For Java 8, try this
-# FROM openjdk:8-jdk-alpine
+# Use Maven image to build the application
+FROM maven:3.8.5-openjdk-11 AS build
 
-# For Java 11, try this
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the source code into the container
+COPY . .
+
+# Build the application
+RUN mvn clean package -DskipTests
+
+# Use a lightweight JRE image for running the application
 FROM adoptopenjdk/openjdk11:alpine-jre
 
-RUN apk add --update ttf-dejavu && rm -rf /var/cache/apk/* 
-
-# Refer to Maven build -> finalName
-ARG JAR_FILE=target/parsecfdi-0.0.1-SNAPSHOT.jar
-
-# cd /opt/app
+# Set the working directory for the runtime container
 WORKDIR /opt/app
 
-# cp target/spring-boot-web.jar /opt/app/app.jar
-COPY ${JAR_FILE} app.jar
+# Copy the built JAR file from the build stage
+COPY --from=build /app/target/parsecfdi-0.0.1-SNAPSHOT.jar app.jar
 
-# java -jar /opt/app/app.jar
-ENTRYPOINT ["java","-jar","app.jar"]
+# Expose port 8080 for Render
+EXPOSE 8080
+
+# Use CMD to run the application
+CMD ["java", "-jar", "app.jar"]
