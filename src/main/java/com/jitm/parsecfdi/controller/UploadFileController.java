@@ -122,8 +122,8 @@ public class UploadFileController {
 		ArrayList<Cfdi> cfdisFile = (ArrayList<Cfdi>)session.getAttribute("cfdis");
 
 		response.setContentType("application/octet-stream");
-        response.setHeader("Content-Disposition", "attachment; filename=customers.xlsx");
-        ByteArrayInputStream stream = excelService.writeExcelTotal("misfacturas",cfdisFile);
+        response.setHeader("Content-Disposition", "attachment; filename=cfdis.xlsx");
+        ByteArrayInputStream stream = excelService.writeExcelTotal("cfdis",cfdisFile);
         IOUtils.copy(stream, response.getOutputStream());
 	}
 

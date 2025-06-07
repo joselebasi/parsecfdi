@@ -13,6 +13,13 @@ RUN mvn clean package -DskipTests
 # Use a lightweight JRE image for running the application
 FROM adoptopenjdk/openjdk11:alpine-jre
 
+# Install required libraries for font rendering
+RUN apk add --no-cache \
+    fontconfig \
+    ttf-dejavu \
+    freetype \
+    freetype-dev
+
 # Set the working directory for the runtime container
 WORKDIR /opt/app
 
