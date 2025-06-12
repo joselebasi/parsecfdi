@@ -106,117 +106,115 @@ public class CfdiService {
     }
 
     public Cfdi readCfdiTotalCheck(InputStream file, String nameFile)
-            throws ParserConfigurationException, IOException, SAXException {
+        throws ParserConfigurationException, IOException, SAXException {
 
-        //XmlMapper xmlMapper = new XmlMapper();
-        //CfdiXmlDto cfdi = xmlMapper.readValue(file, CfdiXmlDto.class);
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setValidating(true);
+    factory.setIgnoringElementContentWhitespace(true);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.parse(file);
+    doc.getDocumentElement().normalize();
 
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setValidating(true);
-        factory.setIgnoringElementContentWhitespace(true);
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document doc = builder.parse(file);
-        doc.getDocumentElement().normalize();
+    NodeList lstRoot = (NodeList) doc.getDocumentElement();
+    for (int i = 0; i < lstRoot.getLength(); i++) {
+        System.out.println(lstRoot.item(i).getNodeName());
+    }
 
-        NodeList lstRoot = (NodeList) doc.getDocumentElement();
-        for (int i = 0; i < lstRoot.getLength(); i++) {
-            System.out.println(lstRoot.item(i).getNodeName());
+    String fecha = "N/A";
+    String formaPago = "N/A";
+    String metodoPago = "N/A";
+    String total = "N/A";
+    String subtotal = "N/A";
+    
+    NodeList nlComprobante = (NodeList) doc.getElementsByTagName("cfdi:Comprobante");
+    for (int i = 0; i < nlComprobante.getLength(); i++) {
+        fecha = nlComprobante.item(i).getAttributes().getNamedItem("Fecha") != null ?
+                nlComprobante.item(i).getAttributes().getNamedItem("Fecha").getTextContent() : "N/A";
+        formaPago = nlComprobante.item(i).getAttributes().getNamedItem("FormaPago") != null ?
+                nlComprobante.item(i).getAttributes().getNamedItem("FormaPago").getTextContent() : "N/A";
+        metodoPago = nlComprobante.item(i).getAttributes().getNamedItem("MetodoPago") != null ?
+                nlComprobante.item(i).getAttributes().getNamedItem("MetodoPago").getTextContent() : "N/A";
+        total = nlComprobante.item(i).getAttributes().getNamedItem("Total") != null ?
+                nlComprobante.item(i).getAttributes().getNamedItem("Total").getTextContent() : "0.00";
+        subtotal = nlComprobante.item(i).getAttributes().getNamedItem("SubTotal") != null ?
+                nlComprobante.item(i).getAttributes().getNamedItem("SubTotal").getTextContent() : "0.00";
+    }
+
+    String nombre = "N/A";
+    String regimenFiscal = "N/A";
+    String rfc = "N/A";
+
+    NodeList nlEmisor = (NodeList) doc.getElementsByTagName("cfdi:Emisor");
+
+    for (int i = 0; i < nlEmisor.getLength(); i++) {
+        nombre = nlEmisor.item(i).getAttributes().getNamedItem("Nombre") != null ?
+                nlEmisor.item(i).getAttributes().getNamedItem("Nombre").getTextContent() : "N/A";
+        regimenFiscal = nlEmisor.item(i).getAttributes().getNamedItem("RegimenFiscal") != null ?
+                nlEmisor.item(i).getAttributes().getNamedItem("RegimenFiscal").getTextContent() : "N/A";
+        rfc = nlEmisor.item(i).getAttributes().getNamedItem("Rfc") != null ?
+                nlEmisor.item(i).getAttributes().getNamedItem("Rfc").getTextContent() : "N/A";
+        NamedNodeMap nnm = nlEmisor.item(i).getAttributes();
+        for (int x = 0; x < nnm.getLength(); x++) {
+            Node attr = nnm.item(x);
+            String name = attr.getNodeName();
+            String value = attr.getNodeValue();
+            System.out.println("  " + name + "=\"" + value + "\"");
         }
+    }
 
-        String fecha = "";
-        String formaPago = "";
-        String metodoPago = "";
-        String total = "";
-        String subtotal = "";
+    String receptorNombre = "N/A";
+    String receptorRegimenFiscal = "N/A";
+    String receptorRfc = "N/A";
+    String usoCFDI = "N/A";
 
-        try {
-            NodeList nlComprobante = (NodeList) doc.getElementsByTagName("cfdi:Comprobante");
-            for (int i = 0; i < nlComprobante.getLength(); i++) {
-                fecha = nlComprobante.item(i).getAttributes().getNamedItem("Fecha").getTextContent();
-                formaPago = nlComprobante.item(i).getAttributes().getNamedItem("FormaPago").getTextContent();
-                metodoPago = nlComprobante.item(i).getAttributes().getNamedItem("MetodoPago").getTextContent();
-                total = nlComprobante.item(i).getAttributes().getNamedItem("Total").getTextContent();
-                subtotal = nlComprobante.item(i).getAttributes().getNamedItem("SubTotal").getTextContent();
-            }
-        } catch (NullPointerException npe) {
-            fecha = "N/A";
-            formaPago = "N/A";
-            metodoPago = "N/A";
-            total = "0.0";
-            subtotal = "0.0";
+    NodeList nlReceptor = (NodeList) doc.getElementsByTagName("cfdi:Receptor");
+
+    for (int i = 0; i < nlReceptor.getLength(); i++) {
+        receptorNombre = nlReceptor.item(i).getAttributes().getNamedItem("Nombre") != null ?
+                nlReceptor.item(i).getAttributes().getNamedItem("Nombre").getTextContent() : "N/A";
+        receptorRegimenFiscal = nlReceptor.item(i).getAttributes().getNamedItem("RegimenFiscalReceptor") != null ?
+                nlReceptor.item(i).getAttributes().getNamedItem("RegimenFiscalReceptor").getTextContent() : "N/A";
+        receptorRfc = nlReceptor.item(i).getAttributes().getNamedItem("Rfc") != null ?
+                nlReceptor.item(i).getAttributes().getNamedItem("Rfc").getTextContent() : "N/A";
+        usoCFDI = nlReceptor.item(i).getAttributes().getNamedItem("UsoCFDI") != null ?
+                nlReceptor.item(i).getAttributes().getNamedItem("UsoCFDI").getTextContent() : "N/A";
+        NamedNodeMap nnm = nlReceptor.item(i).getAttributes();
+        for (int x = 0; x < nnm.getLength(); x++) {
+            Node attr = nnm.item(x);
+            String name = attr.getNodeName();
+            String value = attr.getNodeValue();
+            System.out.println("  " + name + "=\"" + value + "\"");
         }
+    }
 
-        String nombre = "";
-        String regimenFiscal = "";
-        String rfc = "";
+    String iva = "0.00";
+    String ivaRetenido = "0.00";
+    NodeList nlImpuestos = (NodeList) doc.getElementsByTagName("cfdi:Impuestos");
+    for (int i = 0; i < nlImpuestos.getLength(); i++) {
+        iva = nlImpuestos.item(i).getAttributes().getNamedItem("TotalImpuestosTrasladados") != null ?
+                nlImpuestos.item(i).getAttributes().getNamedItem("TotalImpuestosTrasladados").getTextContent() : "0.00";
+        ivaRetenido = nlImpuestos.item(i).getAttributes().getNamedItem("TotalImpuestosRetenidos") != null ?
+                nlImpuestos.item(i).getAttributes().getNamedItem("TotalImpuestosRetenidos").getTextContent() : "0.00";
+    }
 
-        NodeList nlEmisor = (NodeList) doc.getElementsByTagName("cfdi:Emisor");
+    Cfdi rc = new Cfdi();
+    rc.setEmisorNombre(nombre);
+    rc.setEmisorRfc(rfc);
+    rc.setEmisorRegimenFiscal(regimenFiscal);
+    rc.setReceptorNombre(receptorNombre);
+    rc.setReceptorRfc(receptorRfc);
+    rc.setReceptorRegimenFiscal(receptorRegimenFiscal);
+    rc.setFecha(fecha);
+    rc.setFormapago(formaPago);
+    rc.setMetodoPago(metodoPago);
+    rc.setIva(iva);
+    rc.setTotal(total);
+    rc.setSubtotal(subtotal);
+    rc.setXml(nameFile);
+    rc.setIvaRetenido(ivaRetenido);
+    rc.setUsoCFDI(usoCFDI);
 
-        for (int i = 0; i < nlEmisor.getLength(); i++) {
-            nombre = nlEmisor.item(i).getAttributes().getNamedItem("Nombre").getTextContent();
-            regimenFiscal = nlEmisor.item(i).getAttributes().getNamedItem("RegimenFiscal").getTextContent();
-            rfc = nlEmisor.item(i).getAttributes().getNamedItem("Rfc").getTextContent();
-            NamedNodeMap nnm = nlEmisor.item(i).getAttributes();
-            for (int x = 0; x < nnm.getLength(); x++) {
-                Node attr = nnm.item(x);
-                String name = attr.getNodeName();
-                String value = attr.getNodeValue();
-                System.out.println("  " + name + "=\"" + value + "\"");
-            }
-        }
-
-        String receptorNombre = "";
-        String receptorRegimenFiscal = "";
-        String receptorRfc = "";
-        String usoCFDI = "";
-
-        NodeList nlReceptor = (NodeList) doc.getElementsByTagName("cfdi:Receptor");
-
-        for (int i = 0; i < nlReceptor.getLength(); i++) {
-            receptorNombre = nlReceptor.item(i).getAttributes().getNamedItem("Nombre").getTextContent();
-            receptorRegimenFiscal = nlReceptor.item(i).getAttributes().getNamedItem("RegimenFiscalReceptor").getTextContent();
-            receptorRfc = nlReceptor.item(i).getAttributes().getNamedItem("Rfc").getTextContent();
-            usoCFDI = nlReceptor.item(i).getAttributes().getNamedItem("UsoCFDI").getTextContent();
-            NamedNodeMap nnm = nlReceptor.item(i).getAttributes();
-            for (int x = 0; x < nnm.getLength(); x++) {
-                Node attr = nnm.item(x);
-                String name = attr.getNodeName();
-                String value = attr.getNodeValue();
-                System.out.println("  " + name + "=\"" + value + "\"");
-            }
-        }
-
-
-        String iva = "";
-        String ivaRetenido = "";
-        NodeList nlImpuestos = (NodeList) doc.getElementsByTagName("cfdi:Impuestos");
-        for (int i = 0; i < nlImpuestos.getLength(); i++) {
-            try {
-                iva = nlImpuestos.item(i).getAttributes().getNamedItem("TotalImpuestosTrasladados").getTextContent();
-                ivaRetenido = nlImpuestos.item(i).getAttributes().getNamedItem("TotalImpuestosRetenidos").getTextContent();
-            } catch (NullPointerException npe) {
-                iva = "0.0";
-            }
-        }
-
-        Cfdi rc = new Cfdi();
-        rc.setEmisorNombre(nombre);
-        rc.setEmisorRfc(rfc);
-        rc.setEmisorRegimenFiscal(regimenFiscal);
-        rc.setReceptorNombre(receptorNombre);
-        rc.setReceptorRfc(receptorRfc);
-        rc.setReceptorRegimenFiscal(receptorRegimenFiscal);
-        rc.setFecha(fecha);
-        rc.setFormapago(formaPago);
-        rc.setMetodoPago(metodoPago);
-        rc.setIva(iva);
-        rc.setTotal(total);
-        rc.setSubtotal(subtotal);
-        rc.setXml(nameFile);
-        rc.setIvaRetenido(ivaRetenido);
-        rc.setUsoCFDI(usoCFDI);
-
-        return rc;
+    return rc;
     }
 
     public void readCfdiTxt (InputStream file) throws IOException{
