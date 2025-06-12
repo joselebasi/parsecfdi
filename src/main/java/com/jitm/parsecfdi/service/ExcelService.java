@@ -120,7 +120,7 @@ public ByteArrayInputStream writeExcelTotal(String sheetName, ArrayList<Cfdi> ls
         //Create Sheet
         Sheet sh = workbook.createSheet(sheetName);
         //Create top row with column headings
-        String[] columnHeadings = {"Fecha", "Emisor", "Regimen Fiscal", "RFC", "Total", "IVA", "Subtotal", "Forma Pago", "Metodo Pago", "XML"};
+        String[] columnHeadings = {"Fecha", "Emisor", "Regimen Fiscal Emisor", "RFC Emisor",  "Receptor", "Regimen Fiscal Receptor", "RFC Receptor", "Uso CFDI", "Total", "IVA", "Retencion", "Subtotal", "Forma Pago", "Metodo Pago", "XML"};
         //We want to make it bold with a foreground color.
         XSSFFont headerFont = workbook.createFont();
         headerFont.setBold(true);
@@ -158,25 +158,34 @@ public ByteArrayInputStream writeExcelTotal(String sheetName, ArrayList<Cfdi> ls
             row.createCell(1).setCellValue(r.getEmisorNombre());
             row.createCell(2).setCellValue(r.getEmisorRegimenFiscal());
             row.createCell(3).setCellValue(r.getEmisorRfc());
+            row.createCell(4).setCellValue(r.getReceptorNombre());
+            row.createCell(5).setCellValue(r.getReceptorRegimenFiscal());
+            row.createCell(6).setCellValue(r.getReceptorRfc());
+            row.createCell(7).setCellValue(r.getUsoCFDI());
 
-            Cell cTotal = row.createCell(4); 
+            Cell cTotal = row.createCell(8); 
             Double dTotal = r.getTotal().isEmpty()?Double.parseDouble("0.00"):Double.parseDouble(r.getTotal());             
             cTotal.setCellValue(dTotal);
             cTotal.setCellStyle(style);
 
-            Cell cIva = row.createCell(5);
+            Cell cIva = row.createCell(9);
             Double dIva = r.getIva().isEmpty()?Double.parseDouble("0.00"):Double.parseDouble(r.getIva());                
             cIva.setCellValue(dIva);
             cIva.setCellStyle(style);
 
-            Cell cSubTotal = row.createCell(6);                
+            Cell cIvaRetenido = row.createCell(10);
+            Double dIvaRetenido = r.getIvaRetenido().isEmpty()?Double.parseDouble("0.00"):Double.parseDouble(r.getIvaRetenido());                
+            cIvaRetenido.setCellValue(dIvaRetenido);
+            cIvaRetenido.setCellStyle(style);
+
+            Cell cSubTotal = row.createCell(11);                
             //cSubTotal.setCellValue(r.getSubtotal().isEmpty()?Double.parseDouble("0.00"):Double.parseDouble(r.getSubtotal()));
             cSubTotal.setCellValue(new BigDecimal(dTotal).subtract(new BigDecimal(dIva)).doubleValue());
             cSubTotal.setCellStyle(style);
             
-            row.createCell(7).setCellValue(r.getFormapago());
-            row.createCell(8).setCellValue(r.getMetodoPago());
-            row.createCell(9).setCellValue(r.getXml());
+            row.createCell(12).setCellValue(r.getFormapago());
+            row.createCell(13).setCellValue(r.getMetodoPago());
+            row.createCell(14).setCellValue(r.getXml());
         }
         //Autosize columns
         for(int i=0;i<columnHeadings.length;i++) {
