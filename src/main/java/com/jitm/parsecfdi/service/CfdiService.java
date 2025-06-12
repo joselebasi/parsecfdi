@@ -9,8 +9,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.jitm.parsecfdi.pojo.Cfdi;
-
+import com.jitm.parsecfdi.pojo.CfdiXmlDto;
 
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
@@ -107,6 +108,9 @@ public class CfdiService {
     public Cfdi readCfdiTotalCheck(InputStream file, String nameFile)
             throws ParserConfigurationException, IOException, SAXException {
 
+        //XmlMapper xmlMapper = new XmlMapper();
+        //CfdiXmlDto cfdi = xmlMapper.readValue(file, CfdiXmlDto.class);
+
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(true);
         factory.setIgnoringElementContentWhitespace(true);
@@ -161,11 +165,35 @@ public class CfdiService {
             }
         }
 
+        String receptorNombre = "";
+        String receptorRegimenFiscal = "";
+        String receptorRfc = "";
+        String usoCFDI = "";
+
+        NodeList nlReceptor = (NodeList) doc.getElementsByTagName("cfdi:Receptor");
+
+        for (int i = 0; i < nlReceptor.getLength(); i++) {
+            receptorNombre = nlReceptor.item(i).getAttributes().getNamedItem("Nombre").getTextContent();
+            receptorRegimenFiscal = nlReceptor.item(i).getAttributes().getNamedItem("RegimenFiscalReceptor").getTextContent();
+            receptorRfc = nlReceptor.item(i).getAttributes().getNamedItem("Rfc").getTextContent();
+            usoCFDI = nlReceptor.item(i).getAttributes().getNamedItem("UsoCFDI").getTextContent();
+            NamedNodeMap nnm = nlReceptor.item(i).getAttributes();
+            for (int x = 0; x < nnm.getLength(); x++) {
+                Node attr = nnm.item(x);
+                String name = attr.getNodeName();
+                String value = attr.getNodeValue();
+                System.out.println("  " + name + "=\"" + value + "\"");
+            }
+        }
+
+
         String iva = "";
+        String ivaRetenido = "";
         NodeList nlImpuestos = (NodeList) doc.getElementsByTagName("cfdi:Impuestos");
         for (int i = 0; i < nlImpuestos.getLength(); i++) {
             try {
                 iva = nlImpuestos.item(i).getAttributes().getNamedItem("TotalImpuestosTrasladados").getTextContent();
+                ivaRetenido = nlImpuestos.item(i).getAttributes().getNamedItem("TotalImpuestosRetenidos").getTextContent();
             } catch (NullPointerException npe) {
                 iva = "0.0";
             }
@@ -175,6 +203,9 @@ public class CfdiService {
         rc.setEmisorNombre(nombre);
         rc.setEmisorRfc(rfc);
         rc.setEmisorRegimenFiscal(regimenFiscal);
+        rc.setReceptorNombre(receptorNombre);
+        rc.setReceptorRfc(receptorRfc);
+        rc.setReceptorRegimenFiscal(receptorRegimenFiscal);
         rc.setFecha(fecha);
         rc.setFormapago(formaPago);
         rc.setMetodoPago(metodoPago);
@@ -182,6 +213,8 @@ public class CfdiService {
         rc.setTotal(total);
         rc.setSubtotal(subtotal);
         rc.setXml(nameFile);
+        rc.setIvaRetenido(ivaRetenido);
+        rc.setUsoCFDI(usoCFDI);
 
         return rc;
     }

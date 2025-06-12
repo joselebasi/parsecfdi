@@ -68,15 +68,16 @@
                 <thead>
                     <tr>
                         <th>Fecha</th>
-                        <th>Emisor</th>
-                        <th>Regimen Fiscal</th>
-                        <th>RFC</th>
+                        <th>Nombre Emisor</th>
+                        <th>RFC Emisor</th>
+                        <th>Nombre Receptor</th>
+                        <th>RFC Receptor</th>
                         <th>Total</th>
                         <th>IVA</th>
+                        <th>Retencion</th>
                         <th>Subtotal</th>
                         <th>Forma Pago</th>
                         <th>Metodo Pago</th>
-                        <th>XML</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -85,15 +86,16 @@
                     </tr>
                     <tr th:each="cfdi : ${cfdis}">
                         <td th:text="${cfdi.fecha}">Fecha</td>
-                        <td th:text="${cfdi.emisorNombre}">Emisor</td>
-                        <td th:text="${cfdi.emisorRegimenFiscal}">Regimen Fiscal</td>
-                        <td th:text="${cfdi.emisorRfc}">RFC</td>
+                        <td th:text="${cfdi.emisorNombre}">Nombre Emisor</td>
+                        <td th:text="${cfdi.emisorRfc}">RFC Emisor</td>
+                        <td th:text="${cfdi.receptorNombre}">Nombre Receptor</td>
+                        <td th:text="${cfdi.receptorRfc}">RFC Receptor</td>
                         <td th:text="${cfdi.total}">Total</td>
                         <td th:text="${cfdi.iva}">IVA</td>
+                        <td th:text="${cfdi.ivaRetenido}">Retencion</td>
                         <td th:text="${cfdi.subtotal}">Subtotal</td>
                         <td th:text="${cfdi.formapago}">Forma Pago</td>
                         <td th:text="${cfdi.metodoPago}">Metodo Pago</td>
-                        <td th:text="${cfdi.xml}">XML</td>
                     </tr>
                 </tbody>
             </table>
